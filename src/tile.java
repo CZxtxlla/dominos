@@ -20,6 +20,17 @@ public class tile {
         return "[" + left + "|" + right + "]";
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof tile) {
+            return ((tile) obj).left == left && ((tile) obj).right == right || ((tile) obj).left == right && ((tile) obj).right == left;
+        }
+        return false;
+    }
+
     public int getLeft() {
         return left;
     }

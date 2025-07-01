@@ -36,7 +36,7 @@ public class Board {
     }
 
     public int Right() {
-        return (board.get(board.size())).getRight();
+        return (board.get(board.size() - 1)).getRight();
     }
 
     public static void main(String[] args) {
