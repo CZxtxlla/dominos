@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Scanner;
 
 public class game {
     private Board board = new Board(2);
@@ -54,6 +55,7 @@ public class game {
     }
 
     public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         game game = new game();
         int playerTurn = game.startPlayer;
         tile t = game.board.players.get(playerTurn).getHand().get(game.startTile);
@@ -64,14 +66,51 @@ public class game {
             playerTurn = 0;
         }
         while (!game.gameOver()) {
-            if (playerTurn == 5) {
+            Player current = game.board.players.get(playerTurn);
+            System.out.println("Board: " + game.board.board);
+            System.out.println("Current player: " + playerTurn);
+            if (playerTurn == 0) {
                 // User's turn
-                System.out.println("hello");
+
+                while (true) {
+                    if (current.possibleMoves(game.board).size() == 0) {
+                        System.out.println("you have no move");
+                        break;
+                    }
+                    System.out.println("hand: " + current);
+                    System.out.println("Enter index: ");
+                    int index = scanner.nextInt();
+                    System.out.println("Enter side (0 is left, 1 is right): ");
+                    int side = scanner.nextInt();
+                    Move m = new Move(current.getHand().get(index), side);
+                    if (!game.board.isValid(m)) {
+                        System.out.println("Invalid move");
+                    } else {
+                        if (m.side == 0) {
+                            if (m.T.getLeft() == game.board.Left()) {
+                                game.board.board.addFirst(m.T.flipped());
+                            } else {
+                                game.board.board.addFirst(m.T);
+                            }
+                            current.removeTile(m.T);
+                            break;
+                        } else if (m.side == 1) {
+                            if (m.T.getRight() == game.board.Right()) {
+                                game.board.board.add(m.T.flipped());
+                            } else {
+                                game.board.board.add(m.T);
+                            }
+                            current.removeTile(m.T);
+                            break;
+                        } else {
+                            //invalid side/move
+                            continue;
+                        }
+                    }
+                }
+
                 playerTurn ++ ;
             } else {
-                System.out.println(game.board.board);
-                Player current = game.board.players.get(playerTurn);
-                System.out.println("Current player: " + current);
                 Move m = current.firstMove(game.board);
                 if (m == null) {
                     playerTurn++;

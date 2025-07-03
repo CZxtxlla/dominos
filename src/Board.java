@@ -39,6 +39,14 @@ public class Board {
         return (board.get(board.size() - 1)).getRight();
     }
 
+    public boolean isValid(Move move) {
+        if (move.side == 1) {
+            return move.T.getLeft() == this.Right() || move.T.getRight() == this.Right();
+        } else {
+            return move.T.getRight() == this.Left() || move.T.getLeft() == this.Left();
+        }
+    }
+
     public static void main(String[] args) {
         Board b = new Board(2);
         System.out.println(b.tiles.size());
