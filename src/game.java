@@ -2,23 +2,23 @@ import java.util.List;
 import java.util.Scanner;
 
 public class game {
-    private Board board = new Board(2);
+    private Board board = new Board(4);
     public int startPlayer;
     public int startTile;
 
     public game() {
-        initializeBoard(2);
+        initializeBoard(4);
     }
 
     public boolean gameOver() {
         // two conditions, a player has no more tiles or no player can play
         for (int i = 0; i < board.numPlayers; i++) {
             Player p = board.players.get(i);
-            if (p.getHand().size() == 0) {
+            if (p.getHand().isEmpty()) {
                 System.out.println("Player " + i + " has no hand");
                 return true;
             }
-            if (p.possibleMoves(board).size() != 0) {
+            if (!p.possibleMoves(board).isEmpty()) {
                 //System.out.println(p.possibleMoves(board));
                 return false;
             }
@@ -111,14 +111,27 @@ public class game {
 
                 playerTurn ++ ;
             } else {
+                System.out.println("hand: " + current);
                 Move m = current.firstMove(game.board);
                 if (m == null) {
-                    playerTurn++;
-                    if (playerTurn == game.board.numPlayers) {
-                        playerTurn = 0;
+                    System.out.println("Bot has no moves");
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
                     }
-                    continue;
+//                    playerTurn++;
+//                    if (playerTurn == game.board.numPlayers) {
+//                        playerTurn = 0;
+//                    }
+//                    continue;
                 } else {
+                    System.out.println("Bot has a move");
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                     if (m.side == 0) {
                         game.board.board.addFirst(m.T);
                         current.removeTile(m.T);
